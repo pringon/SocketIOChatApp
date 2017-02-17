@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/pringon/SocketIOChatApp/issues"
   },
-  "homepage": "https://github.com/pringon/SocketIOChatApp#readme"
+  "homepage": "https://github.com/pringon/SocketIOChatApp#readme",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.7.3"
+  }
 }
