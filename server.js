@@ -7,12 +7,15 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', socket => {
-  socket.broadcast.emit('user connection', 'user connected')
+  socket.on('username', usr => {
+    socket.username = usr
+    socket.broadcast.emit('user connection', `<b>${usr}</b> has connected.`)
+  })
   socket.on('chat message', msg => {
-    io.emit('chat message', msg)
+    socket.broadcast.emit('chat message', `<b>${socket.username}:</b> ${msg}`)
   })
   socket.on('disconnect', () => {
-    io.emit('user connection', 'user disconnected')
+    io.emit('user connection', `<b>${socket.username}</b> has disconnected.`)
   })
 })
 
