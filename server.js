@@ -17,6 +17,13 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     io.emit('user connection', `<b>${socket.username}</b> has disconnected.`)
   })
+  socket.on('typing', typing => {
+    if(typing) {
+      socket.broadcast.emit('typing', { typing: true, username: socket.username })
+    } else {
+      socket.broadcast.emit('typing', { typing: false })
+    }
+  })
 })
 
 http.listen(3000, () => {

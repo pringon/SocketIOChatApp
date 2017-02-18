@@ -9,12 +9,13 @@
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
+      #messages li, p { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
     </style>
   </head>
   <body>
     <ul id="messages"></ul>
+    <p id="typing" style="display: none;"></p>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
@@ -23,23 +24,64 @@
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io()
+      var timeout = undefined
+      var typing = false
+
+      // CREATE USER
       socket.emit('username', prompt('Please enter your name.'))
+
+      // ANNOUNCE NEW CONNECTIONS
+      socket.on('user connection', sendMessage)
+
+      // SEND MESSAGES
       $('form').submit(function(){
+        if(typing) {
+          typing = false;
+          socket.emit('typing', false)
+          clearTimeout(timeout)
+        }
         var msg = $('#m').val()
         socket.emit('chat message', $('#m').val())
         $('#m').val('')
         sendMessage(`<b>me:</b> ${msg}`)
         return false
       })
-      socket.on('chat message', function(msg) {
-        sendMessage(msg)
+      socket.on('chat message', sendMessage)
+
+      // SEND TYPING NOTIFICATIONS
+      $('form').on('keydown', function(e) {
+        console.log('works')
+        if(e.keyCode !== 13) {
+          socket.emit('typing', true)
+          if(typing) {
+            timeout = setTimeout(timeoutFunc, 5000)
+          } else {
+            typing = true
+            clearTimeout(timeout)
+            timeout = setTimeout(timeoutFunc, 5000)
+          }
+        }
       })
-      socket.on('user connection', function(msg) {
-        sendMessage(msg)
-      })
+      socket.on('typing', announceTyping)
+
+      function timeoutFunc() {
+        typing = false
+        socket.emit('typing', false)
+      }
 
       function sendMessage(msg) {
         $('#messages').append($('<li>').html(msg))
+      }
+
+      function announceTyping(result) {
+        console.log('is working')
+        var announcer = $("#typing")
+        if(result.typing) {
+          announcer.html(`<b>${result.username}</b> is typing.`)
+          announcer.css('display', 'inline')
+        } else {
+          announcer.css('display', 'none')
+        }
       }
     </script>
   </body>
