@@ -17,7 +17,19 @@
   },
   "homepage": "https://github.com/pringon/SocketIOChatApp#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.6",
     "express": "^4.10.2",
+    "express-ejs-layouts": "^2.2.0",
+    "express-session": "^1.15.1",
+    "mongoose": "^4.9.1",
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "redis": "^2.6.5",
     "socket.io": "^1.7.3"
   }
 }
