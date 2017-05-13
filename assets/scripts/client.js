@@ -1,10 +1,6 @@
 "use strict"
-const socket = io()
 let timeout = undefined
 let typing = false
-
-// CREATE USER
-socket.emit('username', localUser)
 
 // ANNOUNCE NEW CONNECTIONS
 socket.on('user connection', updateUsers)
@@ -16,11 +12,10 @@ $('form').submit(() => {
     socket.emit('typing', false)
     clearTimeout(timeout)
   }
-  console.log($("#messages-form > input"))
+
   let msg = $("#messages-form > input").val()
   socket.emit('chat message', $("#messages-form > input").val())
   $('#messages-form > input').val('')
-  sendMessage(`<b>me:</b> ${msg}`)
   return false
 })
 socket.on('chat message', sendMessage)

@@ -1,13 +1,4 @@
 "use strict"
-let localUser = prompt('Please enter your name.')
-
-let checkedUser = $(`li:contains(${localUser})`)
-
-if(checkedUser.length == 0) {
-  $('#online-users-list').append(`<b>${localUser}</b>`)
-} else {
-  checkedUser[0].innerHTML = `<b>${localUser}</b>`
-}
 
 let timeoutFunc = () => {
   typing = false
@@ -15,12 +6,22 @@ let timeoutFunc = () => {
 }
 
 let updateUsers = update => {
-  sendMessage(update.message)
+  sendUpdate(update.message)
   updateUsersList(update.users)
 }
 
 let sendMessage = msg => {
-  $('#messages').append($('<li>').html(msg))
+  if(msg.user == localUser) {
+    console.log("intra1")
+    $('#messages').append($('<li>').html(`<b>You</b>: ${msg.text}`))
+  } else {
+    console.log("intra2")
+    $('#messages').append($('<li>').html(`<b>${msg.user}</b>: ${msg.text}`))
+  }
+}
+
+let sendUpdate = update => {
+  $('#messages').append($('<li>').html(update))
 }
 
 let updateUsersList = users => {

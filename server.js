@@ -2,6 +2,7 @@
 const express        = require('express'),
       app            = express(),
       http           = require('http').Server(app),
+      io             = require('socket.io')(http),
       expressLayouts = require('express-ejs-layouts'),
       mongoose       = require('mongoose'),
       passport       = require('passport'),
@@ -40,7 +41,7 @@ app.use(flash())
 
 require('./app/routes')(app, passport)               //SET ROUTES
 
-require('./app/sockets')(http)
+require('./app/sockets')(io)
 
 http.listen(app.get('port'), () => {
   console.log('listening on port 3000')

@@ -1,5 +1,6 @@
 "use strict"
-const User = require("../models/chat")
+const User     = require("../models/chat"),
+      passport = require("passport")
 
 module.exports = {
 
@@ -7,7 +8,7 @@ module.exports = {
     res.render('pages/login.ejs', { message: req.flash('loginMessage') })
   },
 
-  postLogin: passport => {
+  postLogin: (passport) => {
     return passport.authenticate('local-login', {
       successRedirect: '/chat',
       failureRedirect: '/login',

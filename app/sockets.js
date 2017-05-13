@@ -1,17 +1,22 @@
 "use strict"
-module.exports = (http) => {
+const redisClient = require("redis").createClient(),
+      Message     = require("./models/message")
 
-  const io = require('socket.io')(http)
+module.exports = (io) => {
 
   io.on('connection', socket => {
     socket.on('username', usr => {
+
       socket.username = usr
-      usersList.push(usr)
+      redisClient.sadd("userSessions", usr)
       let message = `<b>${usr}</b> has connected.`
-      emitUsersList(socket, message)
+      redisClient.smembers("userSessions", users => {
+        emitUsersList(socket, message, users)
+      })
     })
     socket.on('chat message', msg => {
-      socket.broadcast.emit('chat message', `<b>${socket.username}:</b> ${msg}`)
+      saveMessage(io, socket.username, msg)
+      io.sockets.emit('chat message', `<b>${socket.username}:</b> ${msg}`)
     })
     socket.on('typing', typing => {
       if(typing) {
@@ -21,18 +26,35 @@ module.exports = (http) => {
       }
     })
     socket.on('disconnect', () => {
-      let userIndex = usersList.indexOf(socket.username)
-      if(userIndex !== -1) {
-        usersList.splice(userIndex, 1)
+      if(typeof socket.username !== 'undefined') {
+        redisClient.srem("userSessions", socket.username)
       }
+
       let message = `<b>${socket.username}</b> has disconnected.`
-      emitUsersList(socket, message)
+      redisClient.smembers("userSessions", users => {
+        emitUsersList(socket, message, users)
+      })
     })
   })
 }
 
-let emitUsersList = (socket, message) => {
+let emitUsersList = (socket, message, users) => {
 
   socket.broadcast.emit('user connection', { message: message,
-                                             users: usersList })
+                                             users: users })
+}
+
+let saveMessage = (io, user, text) => {
+
+  new Message({
+    text:  text,
+    user: user
+  }).save(err => {
+    if(err) {
+      console.log(err)
+    }
+
+    io.sockets.emit('chat message', { text: text,
+                                      user: user })
+  })
 }

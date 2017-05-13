@@ -1,0 +1,15 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="/" class="navbar-brand">Chat App</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <% if(typeof currentUser !== "undefined")  { %>
+        <li><a href="/logout">Logout</a></li>
+      <% } else { %>
+        <li><a href="/signup">Signup</a></li>
+        <li><a href="/login">Login</a></li>
+      <% } %>
+    </ul>
+  </div>
+</nav>

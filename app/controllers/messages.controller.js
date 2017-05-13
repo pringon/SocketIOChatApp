@@ -16,16 +16,18 @@ module.exports = {
     res.send(Message.find(query)
                     .limit(20))
   },
+
   createMessage: (req, res) => {
 
     new Message({
-      text: req.body.text,
-      _chat: req.body.chat,
-      _user: req.body.user.id
+      text:  req.body.text,
+      _user: req.body.user
     }).save(err => {
       if(err) {
         console.log(err)
       }
+
+      res.json()
     })
   }
 }

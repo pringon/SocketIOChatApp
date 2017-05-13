@@ -31,6 +31,9 @@ module.exports = (passport) => {
       process.nextTick(() => {
 
         let name = req.body.name
+        if(name.toLowerCase() == "you") {
+          return done(null, false, req.flash("signupMessage", "You can't use this name"))
+        }
         User.findOne({ $or: [{ "email": email }, { "name": name }] }, (err, user) => {
 
           if(err) {
@@ -56,6 +59,7 @@ module.exports = (passport) => {
               if(err) {
                 throw err
               }
+
               return done(null, newUser)
             })
 
@@ -77,7 +81,7 @@ module.exports = (passport) => {
   }, (req, name, password, done) => {
 
     User.findOne({ $or: [{ name: name }, { email: name }] }, (err, user) => {
-      
+
       if(err) {
         return done(err)
       }
@@ -91,7 +95,6 @@ module.exports = (passport) => {
 
         return done(null, false, req.flash("loginMessage", "Wrong password."))
       }
-
 
       return done(null, user)
     })

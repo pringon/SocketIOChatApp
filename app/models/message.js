@@ -3,10 +3,10 @@ const mongoose = require('mongoose'),
 
 messageSchema = Schema({
 
-  text   : String,
-  sentAt : { type: Date, default: Date.now },
+  text:    String,
+  sentAt:  { type: Date, default: Date.now },
   //_chat  : { type: Schema.Types.ObjectId, ref: 'Chat' },
-  _user  : { type: Schema.Types.ObjectId, ref: 'User' }
+  user:    String
 })
 
 messageSchema.index({ sentAt: -1 })

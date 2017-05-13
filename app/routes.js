@@ -1,7 +1,6 @@
 "use strict"
 const usersController =    require('./controllers/users.controller'),
-      chatsController =    require('./controllers/chats.controller'),
-      messagesController = require('./controllers/messages.controller')
+      chatsController =    require('./controllers/chats.controller')
 
 module.exports = (app, passport) => {
 
@@ -14,9 +13,7 @@ module.exports = (app, passport) => {
   app.get('/login', isNotLoggedIn, usersController.getLogin)
   app.post('/login', isNotLoggedIn, usersController.postLogin(passport))
   app.get('/signup', isNotLoggedIn,  usersController.getSignup)
-  app.post('/signup', isNotLoggedIn, usersController.postSignup(passport), (req, res) => {
-    console.log("intra")
-  })
+  app.post('/signup', isNotLoggedIn, usersController.postSignup(passport))
   app.get('/logout', isLoggedIn, usersController.logoutUser)
 
 }
