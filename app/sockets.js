@@ -10,7 +10,8 @@ module.exports = (io) => {
       socket.username = usr
       redisClient.sadd("userSessions", usr)
       let message = `<b>${usr}</b> has connected.`
-      redisClient.smembers("userSessions", users => {
+      redisClient.smembers("userSessions", (err, users) => {
+        console.log(users)
         emitUsersList(socket, message, users)
       })
     })
@@ -30,7 +31,8 @@ module.exports = (io) => {
       }
 
       let message = `<b>${socket.username}</b> has disconnected.`
-      redisClient.smembers("userSessions", users => {
+      redisClient.smembers("userSessions", (err, users) => {
+        console.log(users)
         emitUsersList(socket, message, users)
       })
     })
