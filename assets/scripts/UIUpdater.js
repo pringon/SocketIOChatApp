@@ -11,11 +11,9 @@ let updateUsers = update => {
 }
 
 let sendMessage = msg => {
-  if(msg.user == localUser) {
-    console.log("intra1")
+  if(msg.user.toLowerCase() == localUser.toLowerCase()) {
     $('#messages').append($('<li>').html(`<b>You</b>: ${msg.text}`))
   } else {
-    console.log("intra2")
     $('#messages').append($('<li>').html(`<b>${msg.user}</b>: ${msg.text}`))
   }
 }
@@ -27,10 +25,9 @@ let sendUpdate = update => {
 let updateUsersList = users => {
   let usersList = $('#online-users-list')
   usersList.empty()
+  usersList.append($('<li>').html(`<b>${localUser}</b>`))
   for(let user of users) {
-    if(user == localUser) {
-      usersList.append($('<li>').html(`<b>${user}</b>`))
-    } else {
+    if(user !== localUser) {
       usersList.append($('<li>').html(user))
     }
   }

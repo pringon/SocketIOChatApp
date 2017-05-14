@@ -16,7 +16,6 @@ module.exports = (io) => {
     })
     socket.on('chat message', msg => {
       saveMessage(io, socket.username, msg)
-      io.sockets.emit('chat message', `<b>${socket.username}:</b> ${msg}`)
     })
     socket.on('typing', typing => {
       if(typing) {
