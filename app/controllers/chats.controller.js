@@ -1,6 +1,6 @@
 "use strict"
 const Message     = require("../models/message"),
-      redisClient = require("redis").createClient()
+      client      = require("redis").createClient(process.env.REDIS_URL)
 
 module.exports = {
 

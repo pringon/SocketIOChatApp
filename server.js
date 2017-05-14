@@ -44,5 +44,5 @@ require('./app/routes')(app, passport)               //SET ROUTES
 require('./app/sockets')(io)
 
 http.listen(app.get('port'), () => {
-  console.log('listening on port 3000')
+  console.log(`listening on port ${app.get('port')}`)
 })
