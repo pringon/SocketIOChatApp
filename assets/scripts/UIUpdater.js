@@ -12,9 +12,9 @@ let updateUsers = update => {
 
 let sendMessage = msg => {
   if(msg.user.toLowerCase() == localUser.toLowerCase()) {
-    $('#messages').append($('<li>').html(`<b>You</b>: ${msg.text}`))
+    $('#messages').prepend($('<li>').html(`<b>You</b>: ${msg.text}`))
   } else {
-    $('#messages').append($('<li>').html(`<b>${msg.user}</b>: ${msg.text}`))
+    $('#messages').prepend($('<li>').html(`<b>${msg.user}</b>: ${msg.text}`))
   }
 }
 

@@ -12,7 +12,7 @@ module.exports = {
             let params = {
               currentUser: req.user.name,
               onlineUsers: users,
-              messages:    recentMessages.reverse()
+              messages:    recentMessages
             }
 
             res.render('pages/chat.ejs', params)
