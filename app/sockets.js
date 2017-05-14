@@ -39,7 +39,7 @@ module.exports = (io) => {
 
 let emitUsersList = (socket, message, users) => {
 
-  io.sockets.emit('user connection', { message: message,
+  socket.broadcast.emit('user connection', { message: message,
                                              users: users })
 }
 
