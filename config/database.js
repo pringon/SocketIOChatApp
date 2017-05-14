@@ -1,4 +1,4 @@
 module.exports = {
 
-  url: "localhost:27017/chatApp"
+  url: (process.env.MONGODB_URI || "localhost:27017/chatApp")
 }
